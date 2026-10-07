@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Presentasi Quest - Game Edukasi Informatika</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f5ff',
+                            100: '#e0ebff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; color: black !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-blue-500 selection:text-white">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-slate-900/80 backdrop-blur border-b border-slate-800 sticky top-0 z-50 no-print">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/30">
+                    <i class="fa-solid fa-file-powerpoint"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight text-white">Master Presentasi Quest</h1>
+                    <p class="text-xs text-slate-400">Modul Edukasi Informatika - Software Presentasi</p>
+                </div>
+            </div>
+            
+            <div id="player-status-bar" class="hidden flex items-center gap-4 bg-slate-800/80 px-4 py-1.5 rounded-full border border-slate-700/50">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-user-graduate text-blue-400 text-sm"></i>
+                    <span id="nav-student-name" class="text-sm font-semibold text-slate-200">Siswa</span>
+                </div>
+                <div class="h-4 w-px bg-slate-700"></div>
+                <div class="flex items-center gap-1.5 text-amber-400 font-bold text-sm">
+                    <i class="fa-solid fa-star"></i>
+                    <span id="nav-score">0</span> XP
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:p-6 flex flex-col justify-center">
+
+        <!-- SCREEN 1: WELCOME & REGISTRATION -->
+        <section id="screen-welcome" class="max-w-md mx-auto w-full bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="text-center mb-6">
+                <div class="w-20 h-20 mx-auto bg-blue-600/20 rounded-2xl flex items-center justify-center text-blue-400 text-4xl mb-4 border border-blue-500/30">
+                    <i class="fa-solid fa-laptop-code"></i>
+                </div>
+                <h2 class="text-2xl font-extrabold text-white">Selamat Datang, Agent!</h2>
+                <p class="text-slate-400 text-sm mt-1">Uji kemampuan kritis & kreatifmu dalam menguasai software presentasi modern.</p>
+            </div>
+
+            <form id="form-start" onsubmit="startGame(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Nama Lengkap Murid</label>
+                    <input type="text" id="input-name" required placeholder="Contoh: Budi Pratama" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Kelas / Kelompok</label>
+                    <input type="text" id="input-class" required placeholder="Contoh: X Informatika 1" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+                </div>
+
+                <div class="bg-blue-950/40 border border-blue-800/40 rounded-xl p-3 text-xs text-blue-300 flex items-start gap-2.5">
+                    <i class="fa-solid fa-lightbulb text-amber-400 text-base mt-0.5"></i>
+                    <span>Selesaikan 4 Misi Tantangan dan kumpulkan XP tertinggi untuk meraih **Sertifikat Master Presentasi**!</span>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-blue-600/30 transition transform active:scale-95 flex items-center justify-center gap-2">
+                    <span>Mulai Petualangan</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </section>
+
+        <!-- SCREEN 2: MISSION MAP -->
+        <section id="screen-map" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                    <span class="text-xs font-semibold text-blue-400 uppercase tracking-widest">Pusat Misi</span>
+                    <h2 class="text-2xl font-bold text-white">Peta Petualangan Presentasi</h2>
+                    <p class="text-slate-400 text-sm">Pilih modul materi di bawah ini secara berurutan untuk melatih keterampilanmu.</p>
+                </div>
+                <div class="flex items-center gap-3 bg-slate-800 px-4 py-2 rounded-xl border border-slate-700">
+                    <i class="fa-solid fa-trophy text-amber-400 text-xl"></i>
+                    <div>
+                        <div class="text-xs text-slate-400">Progress Pembelajaran</div>
+                        <div id="progress-text" class="text-sm font-bold text-white">0 / 4 Misi Selesai</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mission Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="mission-cards-container">
+                <!-- Injected dynamically by JS -->
+            </div>
+
+            <div class="flex justify-center pt-4">
+                <button id="btn-boss-challenge" onclick="startBossChallenge()" disabled class="bg-slate-800 opacity-50 cursor-not-allowed text-white font-bold py-4 px-8 rounded-xl shadow-xl border border-slate-700 flex items-center gap-3 transition">
+                    <i class="fa-solid fa-crown text-amber-400 text-xl"></i>
+                    <span>Tantangan Final: Boss Pitch Deck Studio</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 3: GAMEPLAY / MISSION ACTIVE -->
+        <section id="screen-gameplay" class="hidden space-y-6">
+            <!-- Header gameplay -->
+            <div class="flex items-center justify-between bg-slate-900 p-4 rounded-xl border border-slate-800">
+                <button onclick="backToMap()" class="text-slate-400 hover:text-white text-sm flex items-center gap-2 font-medium">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Peta
+                </button>
+                <span id="mission-title-badge" class="bg-blue-500/20 text-blue-400 border border-blue-500/30 text-xs px-3 py-1 rounded-full font-semibold">
+                    Misi 1: Tata Letak
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left Column: Scenario & Interactive Editor Simulator -->
+                <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Simulasi Slide Real-Time</span>
+                            <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md border border-slate-700">Interactive Canvas</span>
+                        </div>
+                        
+                        <!-- Dynamic Slide View Canvas -->
+                        <div id="slide-preview-container" class="w-full aspect-[16/9] bg-white text-slate-900 rounded-xl p-6 shadow-inner relative overflow-hidden transition-all duration-300 flex flex-col justify-between">
+                            <!-- Injected slide content -->
+                        </div>
+                    </div>
+
+                    <!-- Story Dialogue Box -->
+                    <div class="bg-slate-800/80 border border-slate-700/80 rounded-xl p-4 flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-full bg-indigo-600 flex-shrink-0 flex items-center justify-center text-white text-lg font-bold">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-indigo-300 mb-0.5">Asisten Guru AI (Profe)</div>
+                            <p id="dialogue-text" class="text-sm text-slate-200 leading-relaxed">
+                                Halo Agent! Perhatikan slide di atas. Apakah slide tersebut sudah memenuhi standar desain presentasi yang baik?
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Critical Decision & Interactive Tasks -->
+                <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-1" id="question-heading">Analisis Permasalahan</h3>
+                        <p class="text-xs text-slate-400 mb-4" id="question-subtext">Pilih keputusan atau tindakan terbaik menurut prinsip desain presentasi:</p>
+
+                        <!-- Choice Options Container -->
+                        <div id="options-container" class="space-y-3">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Feedback Modal/Box inside column -->
+                    <div id="feedback-box" class="hidden mt-4 p-4 rounded-xl border text-sm space-y-3 animate-fade-in">
+                        <div id="feedback-title" class="font-bold flex items-center gap-2"></div>
+                        <p id="feedback-desc" class="text-slate-300 text-xs leading-relaxed"></p>
+                        <button id="btn-next-step" onclick="nextQuestion()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 px-4 rounded-lg text-xs transition flex items-center justify-center gap-2">
+                            <span>Lanjutkan Misi</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN 4: CERTIFICATE / RESULTS -->
+        <section id="screen-certificate" class="hidden max-w-3xl mx-auto w-full my-4">
+            <!-- Printable Certificate Box -->
+            <div class="bg-slate-900 border-2 border-amber-500/40 rounded-3xl p-8 md:p-12 text-center relative overflow-hidden shadow-2xl">
+                <!-- Subtle decorative background elements -->
+                <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-amber-500 via-blue-500 to-indigo-500"></div>
+                <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="mb-6 inline-block">
+                    <div class="w-20 h-20 mx-auto bg-amber-500/20 border border-amber-500/40 rounded-full flex items-center justify-center text-amber-400 text-4xl shadow-lg">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                </div>
+
+                <span class="text-xs font-extrabold uppercase tracking-widest text-amber-400 bg-amber-500/10 px-4 py-1.5 rounded-full border border-amber-500/20">
+                    Sertifikat Kelulusan Modul
+                </span>
+
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-4 mb-2">MASTER PRESENTASI DIGITAL</h2>
+                <p class="text-slate-400 text-sm">Diberikan kepada siswa atas keberhasilan menyelesaikan tantangan pembelajaran Informatika:</p>
+
+                <div class="my-6 py-4 border-y border-slate-800">
+                    <div id="cert-student-name" class="text-2xl md:text-3xl font-extrabold text-blue-400 tracking-wide">
+                        [Nama Murid]
+                    </div>
+                    <div id="cert-student-class" class="text-sm font-semibold text-slate-400 mt-1">
+                        [Kelas Informatika]
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-left my-6 bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
+                    <div>
+                        <div class="text-xs text-slate-400">Total Skor XP</div>
+                        <div id="cert-score" class="text-lg font-bold text-amber-400">100 XP</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400">Tingkat Kemahiran</div>
+                        <div id="cert-grade" class="text-lg font-bold text-emerald-400">Sangat Baik (A)</div>
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <div class="text-xs text-slate-400">Tanggal Selesai</div>
+                        <div id="cert-date" class="text-sm font-semibold text-slate-200 mt-0.5">7 Oktober 2026</div>
+                    </div>
+                </div>
+
+                <p class="text-xs text-slate-400 italic max-w-lg mx-auto mb-6">
+                    "Telah teruji mampu mengaplikasikan prinsip hierarki visual, kontras warna, penyusunan alur presentasi persuasif, serta penggunaan software presentasi secara efektif & efisien."
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 no-print">
+                    <button onclick="window.print()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Cetak / Simpan PDF</span>
+                    </button>
+                    <button onclick="restartGame()" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 px-6 rounded-xl border border-slate-700 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Main Lagi</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 border-t border-slate-800 py-4 text-center text-xs text-slate-500 no-print">
+        <p>© Modul Pembelajaran Interaktif Informatika - Topik Software Presentasi</p>
+    </footer>
+
+    <script>
+        /* WEB AUDIO SYNTHESIZER FOR SOUND EFFECTS */
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } else if (type === 'success') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.35);
+                osc.start(now);
+                osc.stop(now + 0.35);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(200, now);
+                osc.frequency.linearRampToValueAtTime(120, now + 0.2);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.2);
+                osc.start(now);
+                osc.stop(now + 0.2);
+            }
+        }
+
+        /* GAME STATE MANAGEMENT */
+        let gameState = {
+            studentName: '',
+            studentClass: '',
+            score: 0,
+            completedMissions: [], // [0, 1, 2, 3]
+            currentMissionIndex: 0,
+            currentQuestionIndex: 0
+        };
+
+        const MISSIONS_DATA = [
+            {
+                id: 0,
+                title: "Misi 1: Tata Letak & Hierarki Visual",
+                icon: "fa-border-all",
+                description: "Pelajari cara mengatur posisi elemen, rule of thirds, dan menghindari slide berantakan.",
+                questions: [
+                    {
+                        dialogue: "Lihat slide draft ini! Teksnya sangat panjang rapat memenuhi layar dan gambar menutup teks. Apa tindakan terbaik untuk memperbaikinya?",
+                        slideHtml: `
+                            <div class="h-full flex flex-col justify-between p-2 bg-yellow-50 border-2 border-dashed border-red-400">
+                                <h1 class="text-xs font-bold text-red-600">Slide Berantakan & Padat Teks</h1>
+                                <p class="text-[10px] text-slate-800 leading-tight">
+                                    Software presentasi adalah perangkat lunak yang digunakan untuk membuat dan menampilkan slide berupa gabungan teks, gambar, grafik, serta video guna menyampaikan ide secara visual. Software presentasi sangat penting untuk kegiatan sekolah dan kerja. Fitur utamanya adalah animasi, transisi, slide master, dan export PDF.
+                                </p>
+                                <div class="bg-red-200 text-[9px] p-1 text-red-800 font-bold">GAMBAR MENUTUPI TEKS DAN TIDAK RAPI</div>
+                            </div>
+                        `,
+                        options: [
+                            { text: "Kecilkan ukuran font sampai ukuran 8pt agar semua kalimat panjang masuk dalam 1 slide.", correct: false, explanation: "Salah. Ukuran font di bawah 18pt sangat sulit dibaca oleh audiens di dalam ruang kelas atau auditorium." },
+                            { text: "Perapkan prinsip '1 Slide = 1 Gagasan', gunakan poin-poin singkat (bullet points), dan beri ruang kosong (white space).", correct: true, explanation: "Tepat! Slide presentasi adalah alat bantu visual, bukan dokumen buku teks. Gunakan poin penting dan beri ruang napas antar elemen." },
+                            { text: "Hapus semua teks dan ganti hanya dengan 10 gambar tanpa judul.", correct: false, explanation: "Kurang tepat. Gambar tanpa konteks atau judul pendukung membuat audiens bingung memahami pesan utama." }
+                        ],
+                        updatedSlideHtml: `
+                            <div class="h-full flex flex-col justify-center p-4 bg-slate-50 rounded-lg border border-emerald-500">
+                                <span class="text-xs font-bold text-blue-600 tracking-wider uppercase mb-1">Pengenalan Software Presentasi</span>
+                                <h2 class="text-base font-extrabold text-slate-900 mb-3">Media Visual Komunikasi Efektif</h2>
+                                <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+                                    <li><b>Tujuan Utama:</b> Menyampaikan gagasan secara ringkas & visual.</li>
+                                    <li><b>Elemen Kunci:</b> Teks ringkas, grafik terstruktur, & media pendukung.</li>
+                                </ul>
+                            </div>
+                        `
+                    },
+                    {
+                        dialogue: "Bagaimana cara mengatur hierarki visual agar penonton langsung tahu mana judul utama dan mana sub-informasi?",
+                        slideHtml: `
+                            <div class="h-full flex flex-col justify-center gap-2 p-3 bg-white">
+                                <div class="text-xs text-slate-700">judul presentasi proyek informatika</div>
+                                <div class="text-xs text-slate-700">oleh budi pratama kelas x</div>
+                                <div class="text-xs text-slate-700">isi materi pembahasan software aplikasi</div>
+                            </div>
+                        `,
+                        options: [
+                            { text: "Gunakan ukuran font yang persis sama untuk semua tulisan agar terlihat adil.", correct: false, explanation: "Salah. Tanpa kontras ukuran, mata audiens tidak tahu mana topik utama yang harus dibaca terlebih dahulu." },
+                            { text: "Gunakan font paling tebal (Bold) & ukuran jauh lebih besar untuk Judul Utama daripada Sub-judul dan Teks Isi.", correct: true, explanation: "Hebat! Kontras ukuran dan ketebalan (Typography Hierarchy) menuntun alur pandangan mata audiens secara alami." }
+                        ],
+                        updatedSlideHtml: `
+                            <div class="h-full flex flex-col justify-center p-4 bg-slate-900 text-white rounded-lg">
+                                <h1 class="text-lg font-black text-blue-400">Proyek Informatika: Software Presentasi</h1>
+                                <p class="text-xs text-slate-300 mt-1">Oleh: Budi Pratama | Kelas X</p>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                id: 1,
+                title: "Misi 2: Tipografi & Kontras Warna",
+                icon: "fa-palette",
+                description: "Pelajari keterbacaan font, aturan kontras warna background-text, serta estetika visual.",
+                questions: [
+                    {
+                        dialogue: "Perhatikan contoh slide di bawah. Apakah kombinasi warna tulisan kuning cerah di atas background putih ini sudah tepat?",
+                        slideHtml: `
+                            <div class="h-full flex items-center justify-center p-4 bg-white text-yellow-300 font-bold text-center">
+                                TULISAN WARNA KUNING TERANG DI BACKGROUND PUTIH
+                            </div>
+                        `,
+                        options: [
+                            { text: "Sudah bagus karena warna kuning sangat cerah dan ceria.", correct: false, explanation: "Salah. Warna terang di atas latar terang memiliki kontras sangat rendah sehingga tidak terbaca (*low contrast*)." },
+                            { text: "Buruk. Gunakan prinsip Kontras Tinggi (Teks Gelap di latar Terang, atau Teks Terang di latar Gelap).", correct: true, explanation: "Benar sekali! Keterbacaan (*readability*) adalah syarat mutlak slide presentasi." }
+                        ],
+                        updatedSlideHtml: `
+                            <div class="h-full flex items-center justify-center p-4 bg-slate-900 text-amber-400 font-extrabold text-center text-sm rounded-lg border-2 border-amber-400">
+                                KONTRAS TINGGI: Teks Terang di Atas Latar Gelap
+                            </div>
+                        `
+                    },
+                    {
+                        dialogue: "Jenis font mana yang paling disarankan untuk presentasi layar digital (seperti proyektor/monitor)?",
+                        slideHtml: `
+                            <div class="h-full flex flex-col justify-center items-center gap-2 p-2 bg-slate-100">
+                                <div class="font-serif italic text-xs">Contoh Font Serif (Times New Roman dengan ekor)</div>
+                                <div class="font-sans font-bold text-xs">Contoh Font Sans-Serif (Arial/Inter tanpa ekor)</div>
+                            </div>
+                        `,
+                        options: [
+                            { text: "Font Sans-Serif (seperti Arial, Montserrat, Inter) karena bersih & mudah dibaca di layar.", correct: true, explanation: "Tepat! Font Sans-Serif (tanpa kait/ekor) jauh lebih mudah dibaca pada resolusi layar monitor/proyektor." },
+                            { text: "Font Dekoratif / Kaligrafi meliuk-liuk agar terkesan sangat artistik.", correct: false, explanation: "Kurang tepat. Font dekoratif yang terlalu rumit justru menyulitkan audiens membaca poin cepat." }
+                        ],
+                        updatedSlideHtml: `
+                            <div class="h-full flex flex-col justify-center items-center p-4 bg-blue-600 text-white rounded-lg">
+                                <span class="font-sans text-base font-extrabold tracking-wide">Sans-Serif: Jelas, Modern, & Legibel</span>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "Misi 3: Alur Komunikasi & Storyboarding",
+                icon: "fa-sitemap",
+                description: "Susun alur presentasi persuasif: Pendahuluan -> Masalah -> Solusi -> Penutup.",
+                questions: [
+                    {
+                        dialogue: "Kamu ditugaskan mempresentasikan proyek 'Aplikasi Pengolah Kata'. Urutan alur slide mana yang paling logis & profesional?",
+                        slideHtml: `
+                            <div class="h-full flex flex-col justify-center p-3 bg-slate-800 text-slate-200 text-xs gap-2">
+                                <div class="p-1 bg-slate-700 rounded">Option A: Kesimpulan dulu -> Demo -> Judul</div>
+                                <div class="p-1 bg-slate-700 rounded">Option B: Judul -> Latar Belakang/Masalah -> Solusi -> Demo -> Kesimpulan & CTA</div>
+                            </div>
+                        `,
+                        options: [
+                            { text: "Judul/Pembuka -> Latar Belakang Masalah -> Solusi & Fitur -> Demo/Data -> Kesimpulan (Call to Action).", correct: true, explanation: "Sempurna! Ini adalah alur *Storytelling* standar industri untuk menyampaikan ide secara persuasif." },
+                            { text: "Langsung masuk ke Fitur Teknis tanpa memberi tahu latar belakang atau judul presentasi.", correct: false, explanation: "Salah. Tanpa konteks pembuka, audiens tidak akan paham mengapa topik ini penting disimak." }
+                        ],
+                        updatedSlideHtml: `
+                            <div class="h-full flex flex-col justify-center p-3 bg-indigo-950 text-indigo-100 rounded-lg text-xs space-y-1">
+                                <div class="font-bold text-amber-400">Alur Storyboard Ideal:</div>
+                                <div>1. Slide Judul & Salam Pembuka</div>
+                                <div>2. Rumusan Masalah / Latar Belakang</div>
+                                <div>3. Solusi & Keunggulan Produk</div>
+                                <div>4. Penutup & Sesi Tanya Jawab</div>
+                            </div>
+                        `
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "Misi 4: Fitur Canggih & Shortcuts",
+                icon: "fa-bolt",
+                description: "Kuasai tombol pintasan keyboard (shortcuts) & transisi slide yang tidak mengganggu fokus.",
+                questions: [
+                    {
+                        dialogue: "Saat ingin menampilkan presentasi slide dalam mode layar penuh (Slide Show) dari slide awal, tombol shortcut keyboard mana yang tercepat?",
+                        slideHtml: `
+                            <div class="h-full flex items-center justify-center p-4 bg-slate-900 text-blue-400 font-mono text-xl font-bold">
+                                Shortcut Keyboard Mode Slide Show?
+                            </div>
+                        `,
+                        options: [
+                            { text: "Tekan Tombol F5 di Keyboard", correct: true, explanation: "Benar! Tombol F5 adalah shortcut standar untuk memulai Slide Show dari slide pertama (Shift + F5 dari slide aktif)." },
+                            { text: "Tekan Ctrl + P", correct: false, explanation: "Salah. Ctrl + P digunakan untuk mencetak dokumen (Print) atau membuka mode Pen/Coretan saat slide show." },
+                            { text: "Tekan Alt + F4", correct: false, explanation: "Salah! Alt + F4 akan menutup jendela aplikasi!" }
+                        ],
+                        updatedSlideHtml: `
+                            <div class="h-full flex flex-col items-center justify-center p-4 bg-emerald-900 text-emerald-200 rounded-lg">
+                                <i class="fa-solid fa-keyboard text-3xl mb-2"></i>
+                                <div class="font-bold">F5 = Mulai Slide Show</div>
+                                <div class="text-xs opacity-80">Shift + F5 = Slide Show dari Slide Aktif</div>
+                            </div>
+                        `
+                    },
+                    {
+                        dialogue: "Bagaimana penggunaan Efek Transisi Slide & Animasi Objek yang paling tepat secara etika presentasi formal?",
+                        slideHtml: `
+                            <div class="h-full flex items-center justify-center p-2 bg-purple-900 text-white text-xs font-bold text-center">
+                                TRANSISI: Putar 360 Derajat + Efek Suara Tepuk Tangan di Setiap Teks
+                            </div>
+                        `,
+                        options: [
+                            { text: "Gunakan transisi halus (seperti Fade/Morph) secara konsisten, hindari animasi berlebihan yang mengganggu.", correct: true, explanation: "Tepat! Animasi berfungsi memperjelas alur informasi, bukan untuk pamer efek gaul yang membuat pusing." },
+                            { text: "Gunakan efek transisi berlainan dan suara riuh di setiap kata agar audiens kaget dan terhibur.", correct: false, explanation: "Salah. Efek suara berlebihan dan transisi liar justru merusak profesionalitas presentasimu." }
+                        ],
+                        updatedSlideHtml: `
+                            <div class="h-full flex flex-col justify-center p-4 bg-slate-800 text-slate-100 rounded-lg border-l-4 border-blue-500">
+                                <div class="font-bold text-xs text-blue-400">Prinsip Animasi Profesional:</div>
+                                <p class="text-[11px] mt-1">Gunakan efek sederhana (Fade / Push / Morph) untuk transisi antar topik secara halus.</p>
+                            </div>
+                        `
+                    }
+                ]
+            }
+        ];
+
+        /* BOSS CHALLENGE DATA */
+        const BOSS_CHALLENGE = {
+            title: "Misi Final: Pitch Deck Studio Client",
+            dialogue: "Selamat datang di Ujian Akhir! Klien meminta bantuanmu membuat 1 slide ringkasan proyek. Pilih kombinasi elemen terbaik!",
+            questions: [
+                {
+                    heading: "Tantangan 1: Pilih Judul & Latar Belakang Slide",
+                    slideHtml: `<div class="h-full flex items-center justify-center bg-slate-200 text-slate-500 text-xs">Kanvas Slide Kosong</div>`,
+                    options: [
+                        { text: "Latar Gelap Elegan + Judul Kontras Terang (Desain Modern Minimalis)", correct: true, score: 25 },
+                        { text: "Latar Merah Menyala + Teks Biru Tua (Tanpa Kontras)", correct: false, score: 0 }
+                    ]
+                }
+            ]
+        };
+
+        // Function to start the game from Welcome screen
+        function startGame(e) {
+            e.preventDefault();
+            const name = document.getElementById('input-name').value.trim();
+            const studentClass = document.getElementById('input-class').value.trim();
+
+            if (!name || !studentClass) return;
+
+            gameState.studentName = name;
+            gameState.studentClass = studentClass;
+
+            // Update UI
+            document.getElementById('nav-student-name').innerText = name;
+            document.getElementById('player-status-bar').classList.remove('hidden');
+
+            playSound('click');
+            showScreen('screen-map');
+            renderMissionCards();
+        }
+
+        function showScreen(screenId) {
+            ['screen-welcome', 'screen-map', 'screen-gameplay', 'screen-certificate'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        function renderMissionCards() {
+            const container = document.getElementById('mission-cards-container');
+            container.innerHTML = '';
+
+            MISSIONS_DATA.forEach((mission, index) => {
+                const isCompleted = gameState.completedMissions.includes(index);
+                const isUnlocked = index === 0 || gameState.completedMissions.includes(index - 1);
+
+                const card = document.createElement('div');
+                card.className = `bg-slate-900 border ${isCompleted ? 'border-emerald-500/50 bg-emerald-950/10' : (isUnlocked ? 'border-slate-800 hover:border-blue-500/50' : 'border-slate-800/40 opacity-60')} rounded-2xl p-5 flex flex-col justify-between transition group relative overflow-hidden`;
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="w-10 h-10 rounded-xl ${isCompleted ? 'bg-emerald-500/20 text-emerald-400' : 'bg-blue-600/20 text-blue-400'} flex items-center justify-center text-lg">
+                                <i class="fa-solid ${mission.icon}"></i>
+                            </div>
+                            ${isCompleted 
+                                ? '<span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30"><i class="fa-solid fa-check"></i> Selesai</span>' 
+                                : (isUnlocked ? '<span class="bg-blue-500/20 text-blue-400 text-[10px] font-bold px-2 py-0.5 rounded-full">Terbuka</span>' : '<span class="bg-slate-800 text-slate-500 text-[10px] font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-lock"></i> Terkunci</span>')
+                            }
+                        </div>
+                        <h3 class="font-bold text-white text-base mb-1 group-hover:text-blue-400 transition">${mission.title}</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">${mission.description}</p>
+                    </div>
+
+                    <button onclick="openMission(${index})" ${!isUnlocked ? 'disabled' : ''} class="mt-4 w-full ${isUnlocked ? 'bg-slate-800 hover:bg-blue-600 text-slate-200 hover:text-white' : 'bg-slate-800/50 text-slate-600 cursor-not-allowed'} font-semibold py-2.5 rounded-xl text-xs transition flex items-center justify-center gap-2">
+                        <span>${isCompleted ? 'Ulangi Misi' : 'Mulai Misi'}</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </button>
+                `;
+
+                container.appendChild(card);
+            });
+
+            // Update Progress text
+            document.getElementById('progress-text').innerText = `${gameState.completedMissions.length} / ${MISSIONS_DATA.length} Misi Selesai`;
+
+            // Check Boss Button
+            const bossBtn = document.getElementById('btn-boss-challenge');
+            if (gameState.completedMissions.length >= MISSIONS_DATA.length) {
+                bossBtn.disabled = false;
+                bossBtn.className = "bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold py-4 px-8 rounded-xl shadow-xl shadow-amber-500/20 flex items-center gap-3 transition transform hover:scale-105 cursor-pointer";
+            }
+        }
+
+        function openMission(missionIndex) {
+            playSound('click');
+            gameState.currentMissionIndex = missionIndex;
+            gameState.currentQuestionIndex = 0;
+
+            const mission = MISSIONS_DATA[missionIndex];
+            document.getElementById('mission-title-badge').innerText = mission.title;
+
+            showScreen('screen-gameplay');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const mission = MISSIONS_DATA[gameState.currentMissionIndex];
+            const q = mission.questions[gameState.currentQuestionIndex];
+
+            // Reset UI states
+            document.getElementById('feedback-box').classList.add('hidden');
+            document.getElementById('slide-preview-container').innerHTML = q.slideHtml;
+            document.getElementById('dialogue-text').innerText = q.dialogue;
+            document.getElementById('question-heading').innerText = `Tantangan #${gameState.currentQuestionIndex + 1}`;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-slate-800 hover:bg-slate-700/80 border border-slate-700 hover:border-blue-500 p-3.5 rounded-xl text-xs text-slate-200 transition flex items-start gap-3 group";
+                btn.onclick = () => selectOption(idx);
+                btn.innerHTML = `
+                    <span class="w-5 h-5 rounded-full bg-slate-700 group-hover:bg-blue-500 group-hover:text-white flex items-center justify-center text-[10px] font-bold text-slate-300 flex-shrink-0 transition">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                    <span class="mt-0.5">${opt.text}</span>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(optionIndex) {
+            const mission = MISSIONS_DATA[gameState.currentMissionIndex];
+            const q = mission.questions[gameState.currentQuestionIndex];
+            const selectedOpt = q.options[optionIndex];
+
+            const feedbackBox = document.getElementById('feedback-box');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const feedbackDesc = document.getElementById('feedback-desc');
+
+            feedbackBox.classList.remove('hidden');
+
+            // Disable option buttons
+            const buttons = document.getElementById('options-container').querySelectorAll('button');
+            buttons.forEach(b => b.classList.add('pointer-events-none', 'opacity-60'));
+
+            if (selectedOpt.correct) {
+                playSound('success');
+                gameState.score += 25;
+                document.getElementById('nav-score').innerText = gameState.score;
+
+                feedbackBox.className = "mt-4 p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-300 space-y-2 animate-fade-in";
+                feedbackTitle.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 text-base"></i> Keputusan Sangat Tepat! (+25 XP)`;
+                feedbackDesc.innerText = selectedOpt.explanation;
+
+                // Live Update Slide Visual Preview to Fixed Version!
+                if (q.updatedSlideHtml) {
+                    document.getElementById('slide-preview-container').innerHTML = q.updatedSlideHtml;
+                }
+            } else {
+                playSound('wrong');
+                feedbackBox.className = "mt-4 p-4 rounded-xl border border-rose-500/40 bg-rose-950/30 text-rose-300 space-y-2 animate-fade-in";
+                feedbackTitle.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-400 text-base"></i> Kurang Tepat!`;
+                feedbackDesc.innerText = selectedOpt.explanation;
+            }
+        }
+
+        function nextQuestion() {
+            playSound('click');
+            const mission = MISSIONS_DATA[gameState.currentMissionIndex];
+
+            if (gameState.currentQuestionIndex < mission.questions.length - 1) {
+                gameState.currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                // Mission Completed
+                if (!gameState.completedMissions.includes(gameState.currentMissionIndex)) {
+                    gameState.completedMissions.push(gameState.currentMissionIndex);
+                }
+                backToMap();
+            }
+        }
+
+        function backToMap() {
+            playSound('click');
+            showScreen('screen-map');
+            renderMissionCards();
+        }
+
+        function startBossChallenge() {
+            playSound('success');
+            // Auto finish boss & trigger certificate
+            gameState.score += 50;
+            document.getElementById('nav-score').innerText = gameState.score;
+
+            // Generate Certificate
+            document.getElementById('cert-student-name').innerText = gameState.studentName;
+            document.getElementById('cert-student-class').innerText = gameState.studentClass;
+            document.getElementById('cert-score').innerText = `${gameState.score} XP`;
+
+            // Grade calculation
+            let grade = "Sangat Baik (A)";
+            if (gameState.score >= 200) grade = "Sempurna (A+)";
+            else if (gameState.score < 150) grade = "Cukup (B)";
+            document.getElementById('cert-grade').innerText = grade;
+
+            // Date
+            const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('cert-date').innerText = new Date().toLocaleDateString('id-ID', dateOptions);
+
+            showScreen('screen-certificate');
+        }
+
+        function restartGame() {
+            playSound('click');
+            gameState.score = 0;
+            gameState.completedMissions = [];
+            document.getElementById('nav-score').innerText = '0';
+            showScreen('screen-welcome');
+        }
+    </script>
+</body>
+</html>
